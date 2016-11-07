@@ -69,8 +69,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\EnemyScript.cs" />
-    <Compile Include="Assets\ScrollScript.cs" />
+    <Compile Include="Assets\Scripts\EnemyScript.cs" />
+    <Compile Include="Assets\Scripts\PickupScript.cs" />
+    <Compile Include="Assets\Scripts\PlayerCanalScript.cs" />
+    <Compile Include="Assets\Scripts\ScrollScript.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

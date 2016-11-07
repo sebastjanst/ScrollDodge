@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/main.unity
+- path: Assets/lvl5-Survival.unity
   isLoaded: 1
   isActive: 1
