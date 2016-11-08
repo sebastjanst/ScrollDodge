@@ -6,6 +6,7 @@ using System.Collections;
 public class ScrollScript : MonoBehaviour {
 
     public Text ScoreText;
+    public bool restless = false;
 
     //gamemode setup
     public int ScoreGoal = 10;
@@ -45,8 +46,8 @@ public class ScrollScript : MonoBehaviour {
             transform.Translate(Vector3.up);
             //rb.MovePosition(rb.position + Vector2.up*50 * Time.fixedDeltaTime);
             position++;
-
-            //Camera.main.orthographicSize += 1;
+            if(restless)
+            Camera.main.orthographicSize += 1;
 
             if (ScrollingPoints)
             {
@@ -60,7 +61,8 @@ public class ScrollScript : MonoBehaviour {
             //rb.MovePosition(rb.position + Vector2.down*50 * Time.fixedDeltaTime);
             position--;
 
-            //Camera.main.orthographicSize -= 1;
+            if(restless)
+            Camera.main.orthographicSize -= 1;
 
             if (ScrollingPoints)
             {

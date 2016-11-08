@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/lvl5-Survival.unity
+- path: Assets/lvl9-Survival2.unity
   isLoaded: 1
   isActive: 1
