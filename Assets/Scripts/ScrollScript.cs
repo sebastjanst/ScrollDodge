@@ -28,6 +28,13 @@ public class ScrollScript : MonoBehaviour {
     private int position = 0;
 
     private bool gameStopped;
+    private bool gameNext;
+    private bool gameRestart;
+    public GameObject WinScreen;
+    public GameObject LossScreen;
+
+    private SpriteRenderer GreenLight;
+    private SpriteRenderer HitLight;
 
     //private Rigidbody2D rb;
 
@@ -36,6 +43,11 @@ public class ScrollScript : MonoBehaviour {
     {
         //rb = GetComponent<Rigidbody2D>();
         gameStopped = false;
+        gameNext = false;
+        gameRestart = false;
+
+        GreenLight = GameObject.FindGameObjectWithTag("greenlight").GetComponent<SpriteRenderer>();
+        HitLight = GameObject.FindGameObjectWithTag("hitlight").GetComponent<SpriteRenderer>();
     }
 	
 	// Update is called once per frame
@@ -73,36 +85,56 @@ public class ScrollScript : MonoBehaviour {
 
         if (FullScrolls)
         {
-            if (position == 5) ScrollTop = true;
-            if (position == -5) ScrollBottom = true;
+
+
+            if (position >= 5) { ScrollTop = true; GreenLight.enabled = true; }
+            if (position <= -5) { ScrollBottom = true; HitLight.enabled = true; }
 
             if (ScrollTop && ScrollBottom)
             {
                 ScrollTop = false;
                 ScrollBottom = false;
 
+                GreenLight.enabled = false;
+                HitLight.enabled = false;
+
                 AddScore(1);
             }
+        }
 
-
+        //scroll to start next level/restart
+        if (gameNext && Input.GetAxis("Mouse ScrollWheel") != 0f)//(Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetAxis("Mouse ScrollWheel") < 0f))
+        {
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex + 1);
+        }
+        else if (gameRestart)
+        {
+            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+            SceneManager.LoadScene(currentSceneIndex);
         }
     }
 
     public void AddScore(int scoreToAdd)
     {
-        score += scoreToAdd;
-        ScoreText.text = "Score: " + score.ToString();
-
-        if(Exact10)
+        if (!gameStopped)
         {
-            if (score > ScoreGoal) StartCoroutine(levelEnd("loss"));
-            if (score == ScoreGoal) StartCoroutine(levelEnd("win"));
-        }
-        else if(score >= ScoreGoal)
-        {
+            score += scoreToAdd;
+            if (score < 0) score = 0;//don't let score go below 0
 
-            StartCoroutine(levelEnd("win"));
+            ScoreText.text = "Score: " + score.ToString();
 
+            if (Exact10)
+            {
+                if (score > ScoreGoal) StartCoroutine(levelEnd("loss"));
+                if (score == ScoreGoal) StartCoroutine(levelEnd("win"));
+            }
+            else if (score >= ScoreGoal)
+            {
+
+                StartCoroutine(levelEnd("win"));
+
+            }
         }
     }
 
@@ -118,25 +150,23 @@ public class ScrollScript : MonoBehaviour {
 
         if (gameOverType == "win")
         {
-            Debug.Log("You Win!");
+            WinScreen.SetActive(true);
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
-            //load next level
-            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(currentSceneIndex + 1);
+            gameNext = true;
         }
 
         if(gameOverType == "loss")
         {
-            Debug.Log("Too many points!");
+            LossScreen.SetActive(true);
 
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(0.5f);
 
-            //reload level
-            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            SceneManager.LoadScene(currentSceneIndex);
+            gameRestart = true;
         }
+
+        yield return null;
     }
 
 }

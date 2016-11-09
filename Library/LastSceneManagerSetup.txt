@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/lvl9-Survival2.unity
+- path: Assets/lvl2-fullScrolls.unity
   isLoaded: 1
   isActive: 1

@@ -12,12 +12,16 @@ public class PickupScript : MonoBehaviour {
 
     private ScrollScript TheScrollScript;
 
-	// Use this for initialization
-	void Start ()
+    private SpriteRenderer GreenLight;
+
+    // Use this for initialization
+    void Start ()
     {
 	    TheScrollScript = FindObjectOfType<ScrollScript>();
         if(PointValue <= NumberSprites.Count)
         PickupTextImg.sprite = NumberSprites[PointValue];
+
+        GreenLight = GameObject.FindGameObjectWithTag("greenlight").GetComponent<SpriteRenderer>();
     }
 	
 	// Update is called once per frame
@@ -30,7 +34,13 @@ public class PickupScript : MonoBehaviour {
     {
         Debug.Log("POINTS!");
         TheScrollScript.AddScore(PointValue);
+        GreenLight.enabled = true;
 
         if (!Infinipickup) Destroy(this.gameObject);
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        GreenLight.enabled = false;
     }
 }
