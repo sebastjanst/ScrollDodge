@@ -80,6 +80,7 @@ public class ScrollScript : MonoBehaviour {
             {
                 AddScore(ScrollingPointsAmmount);
                 ScoreText.text = "Score: " + score.ToString();
+                GetComponent<AudioSource>().Play();
             }
         }
 
@@ -87,8 +88,8 @@ public class ScrollScript : MonoBehaviour {
         {
 
 
-            if (position >= 5) { ScrollTop = true; GreenLight.enabled = true; }
-            if (position <= -5) { ScrollBottom = true; HitLight.enabled = true; }
+            if (position >= 5 && ScrollTop == false ) { ScrollTop = true; GreenLight.enabled = true; GetComponent<AudioSource>().Play(); }
+            if (position <= -5 && ScrollBottom == false) { ScrollBottom = true; HitLight.enabled = true; GetComponent<AudioSource>().Play(); }
 
             if (ScrollTop && ScrollBottom)
             {
@@ -136,11 +137,6 @@ public class ScrollScript : MonoBehaviour {
 
             }
         }
-    }
-
-    void OnTriggerStay2D(Collider2D other)
-    {
-        Debug.Log("ok");
     }
 
     IEnumerator levelEnd(string gameOverType)

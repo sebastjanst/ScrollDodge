@@ -32,11 +32,11 @@ public class PickupScript : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("POINTS!");
         TheScrollScript.AddScore(PointValue);
+        GetComponent<AudioSource>().Play();
         GreenLight.enabled = true;
 
-        if (!Infinipickup) Destroy(this.gameObject);
+        if (!Infinipickup) Destroy(this.gameObject, 0.1f);
     }
 
     void OnTriggerExit2D(Collider2D other)

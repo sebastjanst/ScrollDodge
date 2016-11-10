@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/lvl2-fullScrolls.unity
+- path: Assets/lvl8-exact12.unity
   isLoaded: 1
   isActive: 1

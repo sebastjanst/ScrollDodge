@@ -27,7 +27,7 @@ public class EnemyScript : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log("ouch!");
+        GetComponent<AudioSource>().Play();
         TheScrollScript.AddScore(PointValue);
         HitLight.enabled = true;
 
