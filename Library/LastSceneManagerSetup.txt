@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/lvl8-exact12.unity
+- path: Assets/lvl12-FinalBoss.unity
   isLoaded: 1
   isActive: 1

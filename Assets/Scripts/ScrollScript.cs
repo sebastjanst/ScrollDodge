@@ -13,12 +13,14 @@ public class ScrollScript : MonoBehaviour {
     public bool Exact10; //must get an exact value of points
 
     public bool FullScrolls; //1 point for reaching each end once
+    public bool tenpet;
     private bool ScrollBottom = false;
     private bool ScrollTop = false;
 
     public bool ScrollingPoints; //give points for scrolling
 
     public bool Survival; //survive 10 spins
+    public bool Drain10;
 
     public int ScrollingPointsAmmount = 100;
 
@@ -48,6 +50,8 @@ public class ScrollScript : MonoBehaviour {
 
         GreenLight = GameObject.FindGameObjectWithTag("greenlight").GetComponent<SpriteRenderer>();
         HitLight = GameObject.FindGameObjectWithTag("hitlight").GetComponent<SpriteRenderer>();
+
+        if (Drain10) score = 10;
     }
 	
 	// Update is called once per frame
@@ -118,19 +122,32 @@ public class ScrollScript : MonoBehaviour {
 
     public void AddScore(int scoreToAdd)
     {
+
         if (!gameStopped)
         {
             score += scoreToAdd;
             if (score < 0) score = 0;//don't let score go below 0
+            if (score > 10) score = 10;// or above 10
 
-            ScoreText.text = "Score: " + score.ToString();
+
+            if (tenpet)
+            {
+                ScoreText.text = "";
+                for(int i = 0; i < 10 - score; i++)
+                ScoreText.text += "pet ";
+            }
+            else ScoreText.text = "Score: " + score.ToString();
 
             if (Exact10)
             {
                 if (score > ScoreGoal) StartCoroutine(levelEnd("loss"));
                 if (score == ScoreGoal) StartCoroutine(levelEnd("win"));
             }
-            else if (score >= ScoreGoal)
+            else if (Drain10 && score <= 0)
+            {
+                StartCoroutine(levelEnd("win"));
+            }
+            else if (score >= ScoreGoal && !Drain10)
             {
 
                 StartCoroutine(levelEnd("win"));
