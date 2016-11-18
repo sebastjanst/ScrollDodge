@@ -40,6 +40,12 @@ public class ScrollScript : MonoBehaviour {
 
     //private Rigidbody2D rb;
 
+    //limiting framerate only works with vsync off
+    void Awake()
+    {
+        Application.targetFrameRate = 40;
+    }
+
     // Use this for initialization
     void Start ()
     {
@@ -57,7 +63,7 @@ public class ScrollScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        if (!gameStopped && Input.GetAxis("Mouse ScrollWheel") > 0f && position < 5) // upways
+        if (!gameStopped && (Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetKey(KeyCode.UpArrow)) && position < 5) // upways
         {
             transform.Translate(Vector3.up);
             //rb.MovePosition(rb.position + Vector2.up*50 * Time.fixedDeltaTime);
@@ -71,7 +77,7 @@ public class ScrollScript : MonoBehaviour {
                 ScoreText.text = "Score: " + score.ToString();
             }
         }
-        if (!gameStopped && Input.GetAxis("Mouse ScrollWheel") < 0f && position > -5) // downways
+        if (!gameStopped && (Input.GetAxis("Mouse ScrollWheel") < 0f || Input.GetKey(KeyCode.DownArrow)) && position > -5) // downways
         {
             transform.Translate(Vector3.down);
             //rb.MovePosition(rb.position + Vector2.down*50 * Time.fixedDeltaTime);
@@ -108,7 +114,7 @@ public class ScrollScript : MonoBehaviour {
         }
 
         //scroll to start next level/restart
-        if (gameNext && Input.GetAxis("Mouse ScrollWheel") != 0f)//(Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetAxis("Mouse ScrollWheel") < 0f))
+        if (gameNext && (Input.GetAxis("Mouse ScrollWheel") != 0f || Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow)))//(Input.GetAxis("Mouse ScrollWheel") > 0f || Input.GetAxis("Mouse ScrollWheel") < 0f))
         {
             int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadScene(currentSceneIndex + 1);
@@ -127,7 +133,7 @@ public class ScrollScript : MonoBehaviour {
         {
             score += scoreToAdd;
             if (score < 0) score = 0;//don't let score go below 0
-            if (score > 10) score = 10;// or above 10
+            if (score > 10 && !ScrollingPoints && !Exact10) score = 10;// or above 10
 
 
             if (tenpet)
